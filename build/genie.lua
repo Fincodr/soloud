@@ -308,6 +308,41 @@ end
 
 -- 8< -- 8< -- 8< -- 8< -- 8< -- 8< -- 8< -- 8< -- 8< -- 8< --
 
+  project "bidirectional"
+	kind "ConsoleApp"
+	language "C++"
+	files {
+	  "../demos/bidirectional/**.c*"
+	  }
+	includedirs {
+	  "../include"
+	}
+
+		links {"StaticLib"}
+		if (not os.is("windows")) then
+		  links { "pthread" }
+		end
+if (WITH_LIBMODPLUG == 1) then
+		links {"libmodplug"}
+end
+
+		configuration "Debug"
+			defines { "DEBUG" }
+			flags {"Symbols" }
+			objdir (buildroot .. "/debug")
+			targetname "bidirectional_d"
+			flags { "Symbols" }
+
+
+		configuration "Release"
+			defines { "NDEBUG" }
+			flags {"Optimize"}
+			objdir (buildroot .. "/release")
+			targetname "bidirectional"
+			flags { "EnableSSE2", "OptimizeSpeed", "NoEditAndContinue", "No64BitChecks" }
+
+-- 8< -- 8< -- 8< -- 8< -- 8< -- 8< -- 8< -- 8< -- 8< -- 8< --
+
 if (WITH_LIBMODPLUG == 1) then
 	project "libmodplug"
 		kind "StaticLib"

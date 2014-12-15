@@ -63,7 +63,9 @@ namespace SoLoud
 			// This audio instance is affected by 3d processing
 			PROCESS_3D = 8,
 			// This audio instance has listener-relative 3d coordinates
-			LISTENER_RELATIVE = 16
+			LISTENER_RELATIVE = 16,
+			// This audio instance is reversed
+			START_REVERSED = 32
 		};
 		// Ctor
 		AudioSourceInstance();
@@ -149,6 +151,8 @@ namespace SoLoud
 		AudioCollider *mCollider;
 		// User data related to audio collider
 		int mColliderData;
+		// Stream direction
+		int mDirection;
 		// Get N samples from the stream to the buffer
 		virtual void getAudio(float *aBuffer, unsigned int aSamples) = 0;
 		// Has the stream ended?
@@ -157,6 +161,8 @@ namespace SoLoud
 		virtual void seek(time aSeconds, float *mScratch, unsigned int mScratchSize);
 		// Rewind stream. Base implementation returns NOT_IMPLEMENTED, meaning it can't rewind.
 		virtual result rewind();
+		// Set audio stream playback direction. Base implementation returns NOT_IMPLEMENTED, meaning it can't set direction.
+		virtual result setDirection(int aDirection);
 	};
 
 	class Soloud;
@@ -178,7 +184,9 @@ namespace SoLoud
 			// Audio instances created from this source have listener-relative 3d coordinates
 			LISTENER_RELATIVE = 16,
 			// Delay start of sound by the distance from listener
-			DISTANCE_DELAY = 32
+			DISTANCE_DELAY = 32,
+			// Start reversed
+			SHOULD_START_REVERSED = 64
 		};
 		enum ATTENUATION_MODELS
 		{
@@ -223,6 +231,8 @@ namespace SoLoud
 		AudioSource();
 		// Set the looping of the instances created from this audio source
 		void setLooping(bool aLoop);
+		// Set the direction of the instances created from this audio source
+		void setReversed(bool aReversed);
 		// Set whether only one instance of this sound should ever be playing at the same time
 		void setSingleInstance(bool aSingleInstance);
 		

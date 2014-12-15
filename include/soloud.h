@@ -152,6 +152,9 @@ namespace SoLoud
 		// Stop all voices that play this sound source
 		void stopAudioSource(AudioSource &aSound);
 
+		// Set audio stream playback direction
+		void setDirection(handle aVoiceHandle, int aDirection);
+
 		// Set a live filter parameter. Use 0 for the global filters.
 		void setFilterParameter(handle aVoiceHandle, unsigned int aFilterId, unsigned int aAttributeId, float aValue);
 		// Get a live filter parameter. Use 0 for the global filters.

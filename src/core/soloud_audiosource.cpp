@@ -81,6 +81,7 @@ namespace SoLoud
 		m3dVelocity[2] = 0;		
 		mCollider = 0;
 		mColliderData = 0;
+		mDirection = 1;
 	}
 
 	AudioSourceInstance::~AudioSourceInstance()
@@ -122,12 +123,21 @@ namespace SoLoud
 		{
 			mFlags |= AudioSourceInstance::LISTENER_RELATIVE;
 		}
+		if (aSource.mFlags & AudioSource::SHOULD_START_REVERSED)
+		{
+			mFlags |= AudioSourceInstance::START_REVERSED;
+		}
 
 		mCollider = aSource.mCollider;
 		mColliderData = aSource.mColliderData;
 	}
 
 	result AudioSourceInstance::rewind()
+	{
+		return NOT_IMPLEMENTED;
+	}
+
+	result AudioSourceInstance::setDirection(int aDirection)
 	{
 		return NOT_IMPLEMENTED;
 	}
@@ -197,6 +207,18 @@ namespace SoLoud
 		else
 		{
 			mFlags &= ~SHOULD_LOOP;
+		}
+	}
+
+	void AudioSource::setReversed(bool aReversed)
+	{
+		if (aReversed)
+		{
+			mFlags |= SHOULD_START_REVERSED;
+		}
+		else
+		{
+			mFlags &= ~SHOULD_START_REVERSED;
 		}
 	}
 

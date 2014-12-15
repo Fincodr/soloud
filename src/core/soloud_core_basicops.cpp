@@ -126,6 +126,12 @@ namespace SoLoud
 		FOR_ALL_VOICES_POST
 	}
 
+	void Soloud::setDirection(handle aVoiceHandle, int aDirection)
+	{
+		FOR_ALL_VOICES_PRE
+			mVoice[ch]->setDirection(aDirection);
+		FOR_ALL_VOICES_POST
+	}
 
 	void Soloud::stop(handle aVoiceHandle)
 	{
