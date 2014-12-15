@@ -126,10 +126,10 @@ namespace SoLoud
 		FOR_ALL_VOICES_POST
 	}
 
-	void Soloud::setDirection(handle aVoiceHandle, int aDirection)
+	void Soloud::setReversed(handle aVoiceHandle, bool aReversed)
 	{
 		FOR_ALL_VOICES_PRE
-			mVoice[ch]->setDirection(aDirection);
+			mVoice[ch]->setReversed(aReversed);
 		FOR_ALL_VOICES_POST
 	}
 

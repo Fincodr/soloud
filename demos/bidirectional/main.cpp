@@ -93,25 +93,24 @@ int main(int argc, char *argv[])
 		soloud.setPause(h, false);
 
 		int k = 0;
-		int dir = -1; // Initial direction is backwards (reversed)
+		bool bReversed = true; // Initial direction is backwards (reversed)
 		while (k != 'q') {
 			k = mygetch();
 			switch (k) {
 			case 'r':
-				dir = dir == 1?-1:1;
-				if (dir == 1) {
+				bReversed = bReversed ? false : true;
+				if (!bReversed) {
 					std::cout << "\n--<[FORWARD]>--\n";
-				}
-				else {
+				} else {
 					std::cout << "\n--<[BACKWARD]>--\n";
 				}
-				soloud.setDirection(h, dir);
+				soloud.setReversed(h, bReversed);
 				break;
 			case 'z':
 				std::cout << "\n--<[RESET]>--\n" << std::endl;
-				soloud.setDirection(h, 1);
+				bReversed = false;
+				soloud.setReversed(h, bReversed);
 				soloud.seek(h, 0.0f);
-				dir = 1;
 				break;
 			}
 		}

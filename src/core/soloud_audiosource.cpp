@@ -81,7 +81,7 @@ namespace SoLoud
 		m3dVelocity[2] = 0;		
 		mCollider = 0;
 		mColliderData = 0;
-		mDirection = 1;
+		mReversed = false;
 	}
 
 	AudioSourceInstance::~AudioSourceInstance()
@@ -137,7 +137,7 @@ namespace SoLoud
 		return NOT_IMPLEMENTED;
 	}
 
-	result AudioSourceInstance::setDirection(int aDirection)
+	result AudioSourceInstance::setReversed(bool aReversed)
 	{
 		return NOT_IMPLEMENTED;
 	}

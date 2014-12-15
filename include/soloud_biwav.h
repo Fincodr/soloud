@@ -47,7 +47,7 @@ namespace SoLoud
 		virtual void seek(double aSeconds, float *mScratch, unsigned int mScratchSize);
 		virtual result rewind();
 		virtual bool hasEnded();
-		virtual result setDirection(int aDirection);
+		virtual result setReversed(bool aReversed);
 	};
 
 	class BiWav : public AudioSource

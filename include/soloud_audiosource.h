@@ -151,8 +151,8 @@ namespace SoLoud
 		AudioCollider *mCollider;
 		// User data related to audio collider
 		int mColliderData;
-		// Stream direction
-		int mDirection;
+		// Is stream reversed?
+		int mReversed;
 		// Get N samples from the stream to the buffer
 		virtual void getAudio(float *aBuffer, unsigned int aSamples) = 0;
 		// Has the stream ended?
@@ -162,7 +162,7 @@ namespace SoLoud
 		// Rewind stream. Base implementation returns NOT_IMPLEMENTED, meaning it can't rewind.
 		virtual result rewind();
 		// Set audio stream playback direction. Base implementation returns NOT_IMPLEMENTED, meaning it can't set direction.
-		virtual result setDirection(int aDirection);
+		virtual result setReversed(bool aReversed);
 	};
 
 	class Soloud;

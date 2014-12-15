@@ -45,7 +45,7 @@ namespace SoLoud
 	{
 		mParent = aParent;
 		mOffset = 0;
-		mDirection = (mParent->mFlags & AudioSource::SHOULD_START_REVERSED)?-1:1;
+		mReversed = (mParent->mFlags & AudioSource::SHOULD_START_REVERSED)?true:false;
 	}
 
 	void BiWavInstance::getAudio(float *aBuffer, unsigned int aSamples)
@@ -62,7 +62,7 @@ namespace SoLoud
 		while (written < aSamples)
 		{
 			unsigned int copysize = maxwrite;
-			if (mDirection == 1) {
+			if (!mReversed) {
 				if (copysize + mOffset > mParent->mSampleCount)
 				{
 					copysize = mParent->mSampleCount - mOffset;
@@ -83,16 +83,15 @@ namespace SoLoud
 			unsigned int i;
 			for (i = 0; i < channels; i++)
 			{
-				if (mDirection == 1) {
+				if (!mReversed) {
 					memcpy(aBuffer + i * aSamples + written, mParent->mData + mOffset + i * mParent->mSampleCount, sizeof(float) * copysize);
-				}
-				else {
+				} else {
 					reverse_copy<float>(aBuffer + i * aSamples + written, mParent->mData + mOffset + i * mParent->mSampleCount - copysize, copysize);
 				}				
 			}
 
 			written += copysize;
-			mOffset += mDirection==1?copysize:-copysize;
+			mOffset += mReversed?-copysize:copysize;
 
 			if (copysize != maxwrite)
 			{
@@ -113,7 +112,7 @@ namespace SoLoud
 					{
 						memset(aBuffer + copysize + i * aSamples, 0, sizeof(float) * (aSamples - written));
 					}
-					if (mDirection == 1)
+					if (!mReversed)
 						mOffset += aSamples - written;
 					else
 						mOffset = mParent->mSampleCount;
@@ -149,9 +148,9 @@ namespace SoLoud
 		return 0;
 	}
 
-	result BiWavInstance::setDirection(int aDirection)
+	result BiWavInstance::setReversed(bool aReversed)
 	{
-		mDirection = aDirection;
+		mReversed = aReversed;
 		return 0;
 	}
 
