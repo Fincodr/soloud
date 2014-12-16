@@ -31,7 +31,6 @@ freely, subject to the following restrictions:
 #include "soloud.h"
 #include "soloud_biwav.h"
 #include "soloud_thread.h"
-#include "soloud_echofilter.h"
 
 #ifdef _MSC_VER
 #include <conio.h>
@@ -61,42 +60,32 @@ int main(int argc, char *argv[])
 {
 	// Declare some variables
 	SoLoud::Soloud soloud; // Engine core
-	SoLoud::BiWav wav;       // One sample source
-	//SoLoud::EchoFilter echoFilter;
+	SoLoud::BiWav music;
 
-	//echoFilter.setParams(0.1f, 0.1f);
-	
-	// Initialize SoLoud (automatic back-end selection)
-	// also, enable visualization for FFT calc
+	// Initialize SoLoud
 	soloud.init();
 
-	// Load song
-	SoLoud::result loaded = wav.load("assets/practicetrack.ogg"); // sin_100.wav");
+	// Load background music
+	SoLoud::result music_loaded = music.load("assets/practicetrack.ogg"); // sin_100.wav");
 
-	// Set start as reversed
-	wav.setReversed(true);
+	// Initial direction is backwards (reversed)
+	bool bReversed = true; 
 
-	//wav.setFilter(0, &echoFilter);
-
-	// Set to loop
-	wav.setLooping(true);
-	
-	if (SoLoud::SO_NO_ERROR == loaded) 
+	if (music_loaded == SoLoud::SO_NO_ERROR)
 	{
+		// Music settings
+		music.setReversed(bReversed);
+		music.setLooping(true);
+
 		std::cout << "Playing music. Press <r> to reverse, <z> to reset and <q> to quit" << std::endl;
 
-		// Start playing the sound
-		int h = soloud.play(wav, 1.0f, 0.0f, true);
-		soloud.setRelativePlaySpeed(h, 1.0f);
-		soloud.seek(h, 1*60.0f + 35.0f); // Instant seek
-		soloud.setVolume(h, 1.0f);
-		soloud.setPause(h, false);
+		// Start playing the background music
+		int hMusic = soloud.play(music);
 
-		int k = 0;
-		bool bReversed = true; // Initial direction is backwards (reversed)
-		while (k != 'q') {
-			k = mygetch();
-			switch (k) {
+		int ch = 0;
+		while (ch != 'q') {
+			ch = mygetch();
+			switch (ch) {
 			case 'r':
 				bReversed = bReversed ? false : true;
 				if (!bReversed) {
@@ -104,13 +93,13 @@ int main(int argc, char *argv[])
 				} else {
 					std::cout << "\n--<[BACKWARD]>--\n";
 				}
-				soloud.setReversed(h, bReversed);
+				soloud.setReversed(hMusic, bReversed);
 				break;
 			case 'z':
 				std::cout << "\n--<[RESET]>--\n" << std::endl;
 				bReversed = false;
-				soloud.setReversed(h, bReversed);
-				soloud.seek(h, 0.0f);
+				soloud.setReversed(hMusic, bReversed);
+				soloud.seek(hMusic, 0.0f);
 				break;
 			}
 		}
